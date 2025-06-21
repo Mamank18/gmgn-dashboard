@@ -9,23 +9,42 @@
       background-color: #121212;
       color: white;
       font-family: Arial, sans-serif;
-      text-align: center;
       padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
     }
     input, select, button {
       padding: 10px;
-      margin: 5px;
-      border: none;
+      font-size: 14px;
       border-radius: 5px;
-    }
-    iframe {
-      margin: 10px;
       border: none;
+      outline: none;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
     }
     .chart-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      gap: 10px;
+    }
+    iframe {
+      border: none;
     }
   </style>
 </head>
@@ -33,8 +52,8 @@
 
   <h1>📊 GMGN Multi-Timeframe Chart</h1>
 
-  <div>
-    <input id="contractInput" type="text" placeholder="Enter Contract Address" value="65c1fQCGScocK8rWTEPXBagXFXXzMaetS3L2rU5Epump" size="42">
+  <div class="form-container">
+    <input id="contractInput" type="text" placeholder="Contract Address" value="65c1fQCGScocK8rWTEPXBagXFXXzMaetS3L2rU5Epump" size="35">
     <select id="chainSelect">
       <option value="sol">Solana</option>
       <option value="eth">Ethereum</option>
@@ -51,18 +70,18 @@
       const chain = document.getElementById("chainSelect").value;
       const timeframes = ["1", "5", "15", "60"];
       const container = document.getElementById("chartContainer");
-      container.innerHTML = ""; // reset isi
+      container.innerHTML = "";
 
       timeframes.forEach(tf => {
         const iframe = document.createElement("iframe");
         iframe.src = `https://www.gmgn.cc/kline/${chain}/${ca}?theme=dark&interval=${tf}`;
-        iframe.width = "470";
+        iframe.width = "460";
         iframe.height = "280";
         container.appendChild(iframe);
       });
     }
 
-    // Auto-load default
+    // Auto load on page start
     window.onload = loadCharts;
   </script>
 
