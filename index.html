@@ -80,6 +80,26 @@
       text-align: center;
     }
 
+    .color-picker {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .color-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .color-btn:hover {
+      transform: scale(1.2);
+    }
+
     @media (max-width: 768px) {
       .chart-box {
         flex: 1 1 100%;
@@ -107,6 +127,14 @@
       <option value="light">Light</option>
     </select>
     <button onclick="loadDashboard()">🔍 Load Dashboard</button>
+  </div>
+
+  <div class="color-picker">
+    <div class="color-btn" style="background:#0f2027" onclick="setBgColor('#0f2027', '#f0f0f0')"></div>
+    <div class="color-btn" style="background:#1e2a38" onclick="setBgColor('#1e2a38', '#f0f0f0')"></div>
+    <div class="color-btn" style="background:#ffffff" onclick="setBgColor('#ffffff', '#111')"></div>
+    <div class="color-btn" style="background:#2c3e50" onclick="setBgColor('#2c3e50', '#f0f0f0')"></div>
+    <div class="color-btn" style="background:#000000" onclick="setBgColor('#000000', '#f0f0f0')"></div>
   </div>
 
   <div class="holders" id="holderCount">📌 Holders: <em>loading...</em></div>
@@ -153,8 +181,19 @@
       loadCharts(ca, chain, theme);
     }
 
+    function setBgColor(bg, fg) {
+      document.body.style.background = bg;
+      document.body.style.color = fg;
+      const inputs = document.querySelectorAll('input, select');
+      inputs.forEach(el => {
+        el.style.backgroundColor = bg === '#ffffff' ? '#eee' : '#333';
+        el.style.color = fg;
+      });
+    }
+
     window.onload = loadDashboard;
   </script>
 </body>
 </html>
+
 
