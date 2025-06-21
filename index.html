@@ -1,20 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>GMGN Multi Timeframe Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GMGN Dashboard</title>
   <style>
-    body { font-family: Arial; background-color: #121212; color: white; text-align: center; }
-    iframe { margin: 10px; border: none; }
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+    }
+    iframe {
+      margin: 10px;
+      border: none;
+    }
+    .chart-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
+
   <h1>📊 GMGN Multi-Timeframe Chart</h1>
-  
-  <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-    <iframe src="https://www.gmgn.cc/kline/sol/65c1fQCGScocK8rWTEPXBagXFXXzMaetS3L2rU5Epump?theme=dark&interval=1" width="480" height="280"></iframe>
-    <iframe src="https://www.gmgn.cc/kline/sol/65c1fQCGScocK8rWTEPXBagXFXXzMaetS3L2rU5Epump?theme=dark&interval=5" width="480" height="280"></iframe>
-    <iframe src="https://www.gmgn.cc/kline/sol/65c1fQCGScocK8rWTEPXBagXFXXzMaetS3L2rU5Epump?theme=dark&interval=15" width="480" height="280"></iframe>
-    <iframe src="https://www.gmgn.cc/kline/sol/65c1fQCGScocK8rWTEPXBagXFXXzMaetS3L2rU5Epump?theme=dark&interval=60" width="480" height="280"></iframe>
+
+  <div>
+    <input id="contractInput" type="text" placeholder="Enter Contract Address" value="65c1fQCGScocK8rWTEPXBagXFXXzMaetS3L2rU5Epump" size="42">
+    <select id="chainSelect">
+      <option value="sol">Solana</option>
+      <option value="eth">Ethereum</option>
+      <option value="blast">Blast</option>
+    </select>
+    <button onclick="loadCharts()">🔍 Load Chart</button>
   </div>
+
+  <div class="chart-container" id="chartContainer"></div>
+
+  <script>
+    function loadCharts() {
+      const ca = document.getElementById("contractInput").value.trim();
+      const chain = document.getElementById("chainSelect").value;
+      const timeframes = ["1", "5", "15", "60"];
+      const container = document.getElementById("chartContainer");
+      container.innerHTML = ""; // reset isi
+
+      timeframes.forEach(tf => {
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://www.gmgn.cc/kline/${chain}/${ca}?theme=dark&interval=${tf}`;
+        iframe.width = "470";
+        iframe.height = "280";
+        container.appendChild(iframe);
+      });
+    }
+
+    // Auto-load default
+    window.onload = loadCharts;
+  </script>
+
 </body>
 </html>
