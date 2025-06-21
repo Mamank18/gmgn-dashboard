@@ -1,1 +1,9 @@
+<label>Background:</label>
+<select id="bgSelect" onchange="changeBackground()">
+  <option value="#111">Dark</option>
+  <option value="#1e1e1e">Gray</option>
+  <option value="#ffffff">White</option>
+  <option value="#222f3e">Navy</option>
+  <option value="#000000">Black</option>
+</select>
 
