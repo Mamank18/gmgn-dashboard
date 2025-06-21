@@ -3,61 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GMGN Dashboard</title>
+  <title>GMGN Chart Dashboard</title>
   <style>
-    body {
-      background-color: #121212;
-      color: white;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .form-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    input, select, button {
-      padding: 10px;
-      font-size: 14px;
-      border-radius: 5px;
-      border: none;
-      outline: none;
-    }
-    button {
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .chart-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-    iframe {
-      border: none;
-    }
+    body { font-family: Arial; background: #111; color: #eee; margin: 20px; }
+    input, select, button { margin: 10px 5px; padding: 5px; }
+    iframe { border: none; width: 100%; height: 300px; margin-top: 10px; }
+    .chart-container { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chart-box { flex: 1 1 48%; }
   </style>
 </head>
 <body>
+  <h2>📊 GMGN Multi-Timeframe Chart</h2>
 
-  <h1>📊 GMGN Multi-Timeframe Chart</h1>
-
-  <div class="form-container">
-    <input id="contractInput" type="text" placeholder="Contract Address" value="65c1fQCGScocK8rWTEPXBagXFXXzMaetS3L2rU5Epump" size="35">
+  <div>
+    <label>Contract Address:</label>
+    <input type="text" id="contractInput" value="65c1fQCGScocK8rWTEPXBagXFXXzMaetS3L2rU5Epump" />
+    <label>Chain:</label>
     <select id="chainSelect">
       <option value="sol">Solana</option>
       <option value="eth">Ethereum</option>
       <option value="blast">Blast</option>
+    </select>
+    <label>Theme:</label>
+    <select id="themeSelect">
+      <option value="dark">Dark</option>
+      <option value="light">Light</option>
     </select>
     <button onclick="loadCharts()">🔍 Load Chart</button>
   </div>
@@ -66,24 +36,24 @@
 
   <script>
     function loadCharts() {
-      const ca = document.getElementById("contractInput").value.trim();
-      const chain = document.getElementById("chainSelect").value;
-      const timeframes = ["1", "5", "15", "60"];
-      const container = document.getElementById("chartContainer");
-      container.innerHTML = "";
+      const ca = document.getElementById('contractInput').value;
+      const chain = document.getElementById('chainSelect').value;
+      const theme = document.getElementById('themeSelect').value;
+      const timeframes = ['1', '5', '15', '60'];
+      const container = document.getElementById('chartContainer');
+
+      container.innerHTML = ''; // clear
 
       timeframes.forEach(tf => {
-        const iframe = document.createElement("iframe");
-        iframe.src = `https://www.gmgn.cc/kline/${chain}/${ca}?theme=dark&interval=${tf}`;
-        iframe.width = "460";
-        iframe.height = "280";
-        container.appendChild(iframe);
+        const url = `https://www.gmgn.cc/kline/${chain}/${ca}?interval=${tf}&theme=${theme}`;
+        const div = document.createElement('div');
+        div.className = 'chart-box';
+        div.innerHTML = `<iframe src="${url}" title="Chart ${tf}min"></iframe>`;
+        container.appendChild(div);
       });
     }
 
-    // Auto load on page start
     window.onload = loadCharts;
   </script>
-
 </body>
 </html>
