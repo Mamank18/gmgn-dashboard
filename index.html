@@ -18,42 +18,6 @@
       margin-bottom: 20px;
     }
 
-    .form-section {
-      background: #1e2a38;
-      padding: 15px 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    input, select, button {
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-    }
-
-    input, select {
-      background-color: #333;
-      color: #fff;
-    }
-
-    button {
-      background-color: #3fa34d;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    button:hover {
-      background-color: #2f8c3a;
-    }
-
     .chart-container {
       display: flex;
       flex-wrap: wrap;
@@ -94,43 +58,76 @@
       transform: scale(1.2);
     }
 
-    .clear-btn {
-      background-color: #c0392b;
+    /* === Sidebar === */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 280px;
+      background: #1e2a38;
+      padding: 20px;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .clear-btn:hover {
-      background-color: #a93226;
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: #3fa34d;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .sidebar input,
+    .sidebar select,
+    .sidebar button {
+      padding: 8px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
+
+    .sidebar input,
+    .sidebar select {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .sidebar button {
+      background-color: #3fa34d;
+      color: white;
+      cursor: pointer;
+    }
+
+    .sidebar button.clear-btn {
+      background-color: #c0392b;
     }
 
     @media (max-width: 768px) {
       .chart-box {
         flex: 1 1 100%;
       }
-
-      .form-section {
-        flex-direction: column;
-        align-items: stretch;
-      }
     }
   </style>
 </head>
 <body>
   <h2>📊 GMGN Multi-Timeframe Dashboard</h2>
-
-  <div class="form-section">
-    <input type="text" id="contractInput" value="Insert CA" placeholder="Contract Address" />
-    <button class="clear-btn" onclick="clearContract()">❌</button>
-    <select id="chainSelect">
-      <option value="sol">Solana</option>
-      <option value="eth">Ethereum</option>
-      <option value="blast">Blast</option>
-    </select>
-    <select id="themeSelect">
-      <option value="dark">Dark</option>
-      <option value="light">Light</option>
-    </select>
-    <button onclick="loadDashboard()">🔍 Load Dashboard</button>
-  </div>
 
   <div class="color-picker">
     <div class="color-btn" style="background:#0f2027" onclick="setBgColor('#0f2027', '#f0f0f0')"></div>
@@ -142,7 +139,30 @@
 
   <div class="chart-container" id="chartContainer"></div>
 
+  <!-- Toggle Button -->
+  <button class="sidebar-toggle" onclick="toggleSidebar()">📂</button>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <input type="text" id="contractInput" placeholder="Contract Address" />
+    <select id="chainSelect">
+      <option value="sol">Solana</option>
+      <option value="eth">Ethereum</option>
+      <option value="blast">Blast</option>
+    </select>
+    <select id="themeSelect">
+      <option value="dark">Dark</option>
+      <option value="light">Light</option>
+    </select>
+    <button onclick="loadDashboard()">🔄 Load</button>
+    <button class="clear-btn" onclick="clearContract()">❌ Clear</button>
+  </div>
+
   <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("open");
+    }
+
     function loadCharts(ca, chain, theme) {
       const timeframes = ['1', '5', '15', '60'];
       const container = document.getElementById('chartContainer');
@@ -158,9 +178,15 @@
     }
 
     function loadDashboard() {
-      const ca = document.getElementById('contractInput').value;
+      const ca = document.getElementById('contractInput').value.trim();
       const chain = document.getElementById('chainSelect').value;
       const theme = document.getElementById('themeSelect').value;
+
+      if (!ca) {
+        alert('Please enter a contract address.');
+        return;
+      }
+
       loadCharts(ca, chain, theme);
     }
 
@@ -178,10 +204,6 @@
         el.style.color = fg;
       });
     }
-
-    window.onload = loadDashboard;
   </script>
 </body>
 </html>
-
-
