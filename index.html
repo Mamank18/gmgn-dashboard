@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mamank Snipe Dashboard_1.0</title>
-  <link rel="icon" type="image/png" href="/mnt/data/3d13ff53-418e-4f83-b7cb-d1be784bb3e5.png"/>
+  <link rel="icon" type="image/png" href="favicon.png"/>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -62,13 +62,13 @@
     .sidebar {
       position: fixed;
       top: 0;
-      left: 0;
+      right: 0;
       height: 100%;
       width: 280px;
       background: #1e2a38;
       padding: 20px;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.5);
-      transform: translateX(-100%);
+      box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+      transform: translateX(100%);
       transition: transform 0.3s ease;
       z-index: 999;
       display: flex;
@@ -83,7 +83,7 @@
     .sidebar-toggle {
       position: fixed;
       top: 20px;
-      left: 20px;
+      right: 20px;
       z-index: 1000;
       background: transparent;
       color: #f0f0f0;
@@ -152,7 +152,7 @@
 
   <div class="chart-container" id="chartContainer"></div>
 
-  <button class="sidebar-toggle" onclick="toggleSidebar()">≡</button>
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
   <div class="sidebar" id="sidebar">
     <div class="input-wrapper">
