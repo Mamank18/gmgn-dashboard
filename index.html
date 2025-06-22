@@ -74,12 +74,6 @@
       height: 300px;
     }
 
-    .holders {
-      margin: 20px auto;
-      font-size: 18px;
-      text-align: center;
-    }
-
     .color-picker {
       display: flex;
       gap: 10px;
@@ -100,6 +94,14 @@
       transform: scale(1.2);
     }
 
+    .clear-btn {
+      background-color: #c0392b;
+    }
+
+    .clear-btn:hover {
+      background-color: #a93226;
+    }
+
     @media (max-width: 768px) {
       .chart-box {
         flex: 1 1 100%;
@@ -117,6 +119,7 @@
 
   <div class="form-section">
     <input type="text" id="contractInput" value="65c1fQCGScocK8rWTEPXBagXFXXzMaetS3L2rU5Epump" placeholder="Contract Address" />
+    <button class="clear-btn" onclick="clearContract()">❌</button>
     <select id="chainSelect">
       <option value="sol">Solana</option>
       <option value="eth">Ethereum</option>
@@ -137,28 +140,9 @@
     <div class="color-btn" style="background:#000000" onclick="setBgColor('#000000', '#f0f0f0')"></div>
   </div>
 
-  <div class="holders" id="holderCount">📌 Holders: <em>loading...</em></div>
-
   <div class="chart-container" id="chartContainer"></div>
 
   <script>
-    async function fetchHolders(mint) {
-      const el = document.getElementById("holderCount");
-      el.innerHTML = "📌 Holders: <em>loading...</em>";
-      try {
-        const res = await fetch(`https://api.helius.xyz/v0/tokens/metadata?api-key=cb0e6fdb-3ea9-41bb-9536-479b40403f97&mint=${mint}`);
-        const data = await res.json();
-        if (Array.isArray(data) && data[0]?.numberOfHolders !== undefined) {
-          el.innerHTML = `📌 Holders: <strong>${data[0].numberOfHolders.toLocaleString()}</strong>`;
-        } else {
-          el.innerHTML = "📌 Holders: <em>Not available</em>";
-        }
-      } catch (err) {
-        console.warn("Holder fetch error:", err);
-        el.innerHTML = "📌 Holders: <em>Error</em>";
-      }
-    }
-
     function loadCharts(ca, chain, theme) {
       const timeframes = ['1', '5', '15', '60'];
       const container = document.getElementById('chartContainer');
@@ -177,8 +161,12 @@
       const ca = document.getElementById('contractInput').value;
       const chain = document.getElementById('chainSelect').value;
       const theme = document.getElementById('themeSelect').value;
-      fetchHolders(ca);
       loadCharts(ca, chain, theme);
+    }
+
+    function clearContract() {
+      document.getElementById('contractInput').value = '';
+      document.getElementById('chartContainer').innerHTML = '';
     }
 
     function setBgColor(bg, fg) {
