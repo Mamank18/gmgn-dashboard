@@ -298,7 +298,7 @@
       });
     }
 
-    function loadDashboard() {
+ function loadDashboard() {
   const ca = document.getElementById('contractInput').value.trim();
   const chain = document.getElementById('chainSelect').value;
   const theme = document.getElementById('themeSelect').value;
@@ -308,19 +308,20 @@
     return;
   }
 
-  // Muat chart
   loadCharts(ca, chain, theme);
-
-  // Tutup sidebar
   document.getElementById("sidebar").classList.remove("open");
 
-  // Scroll ke bagian chart-container
   setTimeout(() => {
-    const chartSection = document.getElementById("chartContainer");
-    chartSection.scrollIntoView({ behavior: "smooth" });
-  }, 100); // delay sedikit agar DOM sempat render
-}
+    document.getElementById("chartContainer").scrollIntoView({ behavior: "smooth" });
+  }, 100);
 
+  // Tampilkan CA di pojok bawah
+  const caDisplay = document.getElementById("caDisplay");
+  const caText = document.getElementById("caText");
+  caText.textContent = ca;
+  caDisplay.style.display = "block";
+
+}
 
     function clearContract() {
       document.getElementById('contractInput').value = '';
@@ -371,7 +372,23 @@
     setInterval(fetchCryptoPrices, 60000); // update setiap 60 detik
   </script>
   <div class="chart-container" id="chartContainer"></div>
-  
+  <div id="caDisplay" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1e2a38;
+  color: #f0f0f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  display: none;
+  z-index: 1000;
+  opacity: 0.9;
+">
+  CA: <span id="caText"></span>
+</div>
+
 
 
 </body>
