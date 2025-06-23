@@ -144,9 +144,85 @@
 </head>
 <body>
   <h2>Mamank Snipe Dashboard_1.0</h2>
-
-  <div class="chart-container" id="chartContainer"></div>
-
+  <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+  {
+  "symbols": [
+    {
+      "description": "",
+      "proName": "INDEX:DXY"
+    },
+    {
+      "description": "",
+      "proName": "NASDAQ:XAU"
+    },
+    {
+      "description": "",
+      "proName": "EASYMARKETS:OILUSD"
+    },
+    {
+      "description": "",
+      "proName": "FX_IDC:USDIDR"
+    }
+  ],
+  "showSymbolLogo": true,
+  "isTransparent": false,
+  "displayMode": "adaptive",
+  "colorTheme": "dark",
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+ <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+  {
+  "symbols": [
+    {
+      "description": "",
+      "proName": "BITSTAMP:BTCUSD"
+    },
+    {
+      "description": "",
+      "proName": "BITSTAMP:ETHUSD"
+    },
+    {
+      "description": "",
+      "proName": "COINBASE:SOLUSD"
+    },
+    {
+      "description": "",
+      "proName": "COINBASE:DOGEUSD"
+    },
+    {
+      "description": "",
+      "proName": "COINBASE:LTCUSD"
+    },
+    {
+      "description": "",
+      "proName": "KRAKEN:XMRUSD"
+    },
+    {
+      "description": "",
+      "proName": "COINBASE:XRPUSD"
+    }
+  ],
+  "showSymbolLogo": true,
+  "isTransparent": false,
+  "displayMode": "adaptive",
+  "colorTheme": "dark",
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<div class="chart-container" id="chartContainer"></div>
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
   <div class="sidebar" id="sidebar">
@@ -238,6 +314,23 @@
         setBgColor('#0f2027', '#f0f0f0');
       }
     }
+  </script>
+
+  <script>
+    async function fetchCryptoPrices() {
+      try {
+        const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana,bitcoin,ethereum&vs_currencies=usd");
+        const data = await res.json();
+        document.getElementById("solPrice").innerText = "SOL: $" + data.solana.usd;
+        document.getElementById("btcPrice").innerText = "BTC: $" + data.bitcoin.usd;
+        document.getElementById("ethPrice").innerText = "ETH: $" + data.ethereum.usd;
+      } catch (error) {
+        console.error("Gagal ambil harga:", error);
+      }
+    }
+
+    fetchCryptoPrices();
+    setInterval(fetchCryptoPrices, 60000); // update setiap 60 detik
   </script>
 </body>
 </html>
