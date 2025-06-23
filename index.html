@@ -44,7 +44,8 @@
       display: flex;
       gap: 10px;
       justify-content: center;
-      margin-top: 20px;
+      margin-top: 10px;
+      flex-wrap: wrap;
     }
 
     .color-btn {
@@ -144,14 +145,6 @@
 <body>
   <h2>Mamank Snipe Dashboard_1.0</h2>
 
-  <div class="color-picker">
-    <div class="color-btn" style="background:#0f2027" onclick="setBgColor('#0f2027', '#f0f0f0')"></div>
-    <div class="color-btn" style="background:#1e2a38" onclick="setBgColor('#1e2a38', '#f0f0f0')"></div>
-    <div class="color-btn" style="background:#ffffff" onclick="setBgColor('#ffffff', '#111')"></div>
-    <div class="color-btn" style="background:#2c3e50" onclick="setBgColor('#2c3e50', '#f0f0f0')"></div>
-    <div class="color-btn" style="background:#000000" onclick="setBgColor('#000000', '#f0f0f0')"></div>
-  </div>
-
   <div class="chart-container" id="chartContainer"></div>
 
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
@@ -171,6 +164,15 @@
       <option value="light">Light</option>
     </select>
     <button onclick="loadDashboard()">🎯 Snipe</button>
+
+    <!-- ✅ Color Picker sekarang berada di dalam sidebar -->
+    <div class="color-picker">
+      <div class="color-btn" style="background:#0f2027" onclick="setBgColor('#0f2027', '#f0f0f0')"></div>
+      <div class="color-btn" style="background:#1e2a38" onclick="setBgColor('#1e2a38', '#f0f0f0')"></div>
+      <div class="color-btn" style="background:#ffffff" onclick="setBgColor('#ffffff', '#111')"></div>
+      <div class="color-btn" style="background:#2c3e50" onclick="setBgColor('#2c3e50', '#f0f0f0')"></div>
+      <div class="color-btn" style="background:#000000" onclick="setBgColor('#000000', '#f0f0f0')"></div>
+    </div>
   </div>
 
   <script>
@@ -203,8 +205,7 @@
       }
 
       loadCharts(ca, chain, theme);
-      const sidebar = document.getElementById("sidebar");
-      sidebar.classList.remove("open");
+      document.getElementById("sidebar").classList.remove("open");
     }
 
     function clearContract() {
@@ -240,3 +241,4 @@
   </script>
 </body>
 </html>
+
