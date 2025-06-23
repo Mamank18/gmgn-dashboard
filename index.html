@@ -144,10 +144,45 @@
 </head>
 <body>
   <h2>Mamank Snipe Dashboard_1.0</h2>
+ <!-- Bungkus tombol dengan div untuk pemusatan -->
+<div style="text-align: center; margin-top: 20px;">
+  <button onclick="toggleWidget()" style="
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  ">
+    <img src="https://raw.githubusercontent.com/Mamank18/gmgn-dashboard/main/tombolcg.png" 
+         alt="Coingecko Toggle" 
+         style="height: 40px;" 
+         title="Toggle Market Widget">
+  </button>
+</div>
+
+<!-- Kotak Widget -->
+<div id="widgetBox" style="background:#0e1a25; padding:10px; border-radius:10px; margin: 20px auto; max-width: 1000px; display: none;">
+  <script src="https://widgets.coingecko.com/gecko-coin-price-static-headline-widget.js"></script>
+  <gecko-coin-price-static-headline-widget 
+    locale="en" 
+    dark-mode="true" 
+    transparent-background="true" 
+    outlined="true" 
+    coin-ids="solana,binancecoin,bitcoin,ethereum,dogecoin,ripple,litecoin,monero" 
+    initial-currency="usd">
+  </gecko-coin-price-static-headline-widget>
+</div>
+
+<script>
+  function toggleWidget() {
+    const box = document.getElementById("widgetBox");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+  }
+</script>
+</script>
   <!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container">
   <div class="tradingview-widget-container__widget"></div>
-  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <div class="tradingview-widget-copyright"></div>
   <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
   {
   "symbols": [
@@ -177,9 +212,7 @@
   </script>
 </div>
 <!-- TradingView Widget END -->
- <script src="https://widgets.coingecko.com/gecko-coin-price-static-headline-widget.js"></script>
-<gecko-coin-price-static-headline-widget locale="en" dark-mode="true" transparent-background="true" outlined="true" coin-ids="solana,binancecoin,bitcoin,ethereum,dogecoin,ripple,litecoin,monero" initial-currency="usd"></gecko-coin-price-static-headline-widget>
-<div class="chart-container" id="chartContainer"></div>
+ <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/coinMarquee.js"></script><div id="coinmarketcap-widget-marquee" coins="1,1027,5426,1839,74,52,2,328" currency="USD" theme="dark" transparent="true" show-symbol-logo="true"></div>
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
   <div class="sidebar" id="sidebar">
@@ -289,6 +322,8 @@
     fetchCryptoPrices();
     setInterval(fetchCryptoPrices, 60000); // update setiap 60 detik
   </script>
+  <div class="chart-container" id="chartContainer"></div>
+
 </body>
 </html>
 
