@@ -109,6 +109,7 @@
       font-size: 16px;
       cursor: pointer;
       padding: 0;
+      display: none;
     }
 
     .sidebar input,
@@ -156,8 +157,8 @@
 
   <div class="sidebar" id="sidebar">
     <div class="input-wrapper">
-      <input type="text" id="contractInput" placeholder="Contract Address" />
-      <button class="clear-inline-btn" onclick="clearContract()">×</button>
+      <input type="text" id="contractInput" placeholder="Contract Address" oninput="toggleClearButton()" />
+      <button class="clear-inline-btn" id="clearBtn" onclick="clearContract()">×</button>
     </div>
     <select id="chainSelect">
       <option value="sol">Solana</option>
@@ -201,12 +202,17 @@
       }
 
       loadCharts(ca, chain, theme);
-      document.getElementById("sidebar").classList.remove("open");
+      const sidebar = document.getElementById("sidebar");
+      sidebar.style.transform = "translateX(100%)";
+      setTimeout(() => {
+        sidebar.classList.remove("open");
+      }, 300);
     }
 
     function clearContract() {
       document.getElementById('contractInput').value = '';
       document.getElementById('chartContainer').innerHTML = '';
+      toggleClearButton();
     }
 
     function setBgColor(bg, fg) {
@@ -218,7 +224,12 @@
         el.style.color = fg;
       });
     }
+
+    function toggleClearButton() {
+      const input = document.getElementById('contractInput');
+      const btn = document.getElementById('clearBtn');
+      btn.style.display = input.value.trim() ? 'block' : 'none';
+    }
   </script>
 </body>
 </html>
-
