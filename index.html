@@ -177,55 +177,8 @@
   </script>
 </div>
 <!-- TradingView Widget END -->
- <!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
-  <div class="tradingview-widget-container__widget"></div>
-  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-  {
-  "symbols": [
-    {
-      "description": "",
-      "proName": "BITSTAMP:BTCUSD"
-    },
-    {
-      "description": "",
-      "proName": "BITSTAMP:ETHUSD"
-    },
-    {
-      "description": "",
-      "proName": "COINBASE:SOLUSD"
-    },
-    {
-      "description": "",
-      "proName": "BINANCE:BNBUSD"
-    },
-    {
-      "description": "",
-      "proName": "COINBASE:DOGEUSD"
-    },
-    {
-      "description": "",
-      "proName": "COINBASE:LTCUSD"
-    },
-    {
-      "description": "",
-      "proName": "KRAKEN:XMRUSD"
-    },
-    {
-      "description": "",
-      "proName": "COINBASE:XRPUSD"
-    }
-  ],
-  "showSymbolLogo": true,
-  "isTransparent": true,
-  "displayMode": "regular",
-  "colorTheme": "dark",
-  "locale": "en"
-}
-  </script>
-</div>
-<!-- TradingView Widget END -->
+ <script src="https://widgets.coingecko.com/gecko-coin-price-static-headline-widget.js"></script>
+<gecko-coin-price-static-headline-widget locale="en" dark-mode="true" transparent-background="true" outlined="true" coin-ids="solana,binancecoin,bitcoin,ethereum,dogecoin,ripple,litecoin,monero" initial-currency="usd"></gecko-coin-price-static-headline-widget>
 <div class="chart-container" id="chartContainer"></div>
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 
