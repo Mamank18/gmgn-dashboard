@@ -221,7 +221,6 @@
     box.style.display = box.style.display === "none" ? "block" : "none";
   }
 </script>
-</script>
   <!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container">
   <div class="tradingview-widget-container__widget"></div>
@@ -300,18 +299,28 @@
     }
 
     function loadDashboard() {
-      const ca = document.getElementById('contractInput').value.trim();
-      const chain = document.getElementById('chainSelect').value;
-      const theme = document.getElementById('themeSelect').value;
+  const ca = document.getElementById('contractInput').value.trim();
+  const chain = document.getElementById('chainSelect').value;
+  const theme = document.getElementById('themeSelect').value;
 
-      if (!ca) {
-        alert('Please enter a contract address.');
-        return;
-      }
+  if (!ca) {
+    alert('Please enter a contract address.');
+    return;
+  }
 
-      loadCharts(ca, chain, theme);
-      document.getElementById("sidebar").classList.remove("open");
-    }
+  // Muat chart
+  loadCharts(ca, chain, theme);
+
+  // Tutup sidebar
+  document.getElementById("sidebar").classList.remove("open");
+
+  // Scroll ke bagian chart-container
+  setTimeout(() => {
+    const chartSection = document.getElementById("chartContainer");
+    chartSection.scrollIntoView({ behavior: "smooth" });
+  }, 100); // delay sedikit agar DOM sempat render
+}
+
 
     function clearContract() {
       document.getElementById('contractInput').value = '';
@@ -367,7 +376,5 @@
 
 </body>
 </html>
-
-
 
 
