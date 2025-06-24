@@ -1,4 +1,5 @@
 
+ 
 // ✅ Token metadata cache
 let tokenMap = JSON.parse(localStorage.getItem("tokenMap") || "{}");
 
@@ -13,34 +14,21 @@ function shortenAddress(addr) {
   return addr.length > 10 ? addr.slice(0, 6) + "..." + addr.slice(-4) : addr;
 }
 
-async function getSolBalance(walletAddress) {
-  try {
-    const response = await fetch("https://api.mainnet-beta.solana.com", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        jsonrpc: "2.0",
-        id: 1,
-        method: "getBalance",
-        params: [walletAddress]
-      })
-    });
-
-    const result = await response.json();
-    if (result.result && typeof result.result.value === "number") {
-      const sol = result.result.value / 1e9;
-      return sol.toFixed(4); // Format 4 desimal
-    } else {
-      console.error("❌ Invalid balance result:", result);
-      return "N/A";
-    }
-  } catch (err) {
-    console.error("❌ Failed to fetch balance from RPC:", err);
-    return "N/A";
-  }
+async function getSolBalance(address) {
+  const response = await fetch(`https://rpc.helius.xyz/?api-key=${heliusApiKey}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "getBalance",
+      params: [address]
+    })
+  });
+  const data = await response.json();
+  return data?.result?.value != null ? (data.result.value / 1e9) : 0;
 }
+
 async function getSolPriceUSD() {
   const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd");
   const data = await res.json();
