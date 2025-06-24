@@ -59,7 +59,7 @@
 <div style="width: 100%; overflow: hidden;">
   <img src="https://raw.githubusercontent.com/Mamank18/gmgn-dashboard/main/mamank_header.png" alt="Mamank Snipe Dashboard Header" style="width: 100%; height: auto; display: block;" />
 </div>
-  <!-- TradingView Widget BEGIN -->
+
 <div class="tradingview-widget-container">
   <div class="tradingview-widget-container__widget"></div>
   <div class="tradingview-widget-copyright"></div>
@@ -95,23 +95,20 @@
 }
   </script>
 </div>
-<!-- TradingView Widget END -->
- <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/coinMarquee.js"></script><div id="coinmarketcap-widget-marquee" coins="1,1027,5426,1839,74,52,2,328" currency="USD" theme="dark" transparent="true" show-symbol-logo="true"></div>
+
+<script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/coinMarquee.js"></script>
+<div id="coinmarketcap-widget-marquee" coins="1,1027,5426,1839,74,52,2,328" currency="USD" theme="dark" transparent="true" show-symbol-logo="true"></div>
+
 <div style="text-align: center; margin-top: 20px;">
-  <button onclick="toggleCalendar()" style="
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  ">
+  <button onclick="toggleCalendar()" style="background: transparent; border: none; cursor: pointer; padding: 0;">
     <img src="https://raw.githubusercontent.com/Mamank18/gmgn-dashboard/main/economicaltv.png" 
          alt="economicaltv" 
          style="height: 40px;" 
          title="Toggle Economic Calender">
   </button>
   <div id="calendarWidget" style="display: none;">
-  <div class="tradingview-widget-container" style="margin-top: 10px;">
-    <div class="tradingview-widget-container__widget"></div>
+    <div class="tradingview-widget-container" style="margin-top: 10px;">
+      <div class="tradingview-widget-container__widget"></div>
     </div>
     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
     {
@@ -126,6 +123,7 @@
     </script>
   </div>
 </div>
+
 <div class="sidebar" id="sidebar">
   <div class="input-wrapper">
     <button class="clear-inline-btn" id="clearBtn" onclick="clearContract()">×</button>
@@ -153,9 +151,9 @@
   </button>
 </div>
 
-<button id="backToTop" onclick="scrollToTop()" title="Back to Top">↑</button>
-  <!-- SOL Ballance & CLock BEGIN -->
-<div id="solClockCombined" style="
+<button id="backToTop" onclick="scrollToTop()" title="Back to Top" >↑</button>
+
+<div id="solClockCombined" onclick="toggleBalanceVisibility()" style="
   position: fixed;
   bottom: 10px;
   left: 50%;
@@ -169,181 +167,12 @@
   z-index: 9999;
   text-shadow: 0 0 3px #00ffcc;
   text-align: center;
+  cursor: pointer;
 ">
   <div id="clockDisplay">Loading time...</div>
-  <div id="balanceDisplay">Loading balance...</div>
+  <div id="balanceDisplay">**** SOL ($****)</div>
 </div>
 
-<script>
-  const walletAddress = "DMsDZSayCJ1uwLUxGzJmniDGcfNtmZgzg83Mi9An8pi3";
-  const heliusApiKey = "cb0e6fdb-3ea9-41bb-9536-479b40403f97";
-
-  async function getSolBalance(address) {
-    const response = await fetch(`https://rpc.helius.xyz/?api-key=${heliusApiKey}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        jsonrpc: "2.0",
-        id: 1,
-        method: "getBalance",
-        params: [address]
-      })
-    });
-    const data = await response.json();
-    if (data?.result?.value != null) {
-      return (data.result.value / 1e9).toFixed(4) + " SOL";
-    } else {
-      return "0.0000 SOL";
-    }
-  }
-
-  function getCurrentTime() {
-    const now = new Date();
-    return now.toLocaleTimeString("id-ID", { hour12: false });
-  }
-
-  async function updateClockAndBalance() {
-    try {
-      const balance = await getSolBalance(walletAddress);
-      document.getElementById("balanceDisplay").innerText = `${balance}`;
-    } catch (err) {
-      document.getElementById("balanceDisplay").innerText = "Gagal ambil saldo";
-    }
-  }
-
-  function updateTime() {
-    const time = getCurrentTime();
-    document.getElementById("clockDisplay").innerText = time;
-  }
-
-  updateClockAndBalance();
-  setInterval(updateClockAndBalance, 60000); // Update saldo tiap 60 detik
-  updateTime();
-  setInterval(updateTime, 1000); // Update jam tiap detik
-</script>
-  <!-- SOL Ballance & CLock END -->
-<script>
-  let currentCA = "";
-  function toggleCalendar() {
-    const calendar = document.getElementById("calendarWidget");
-    calendar.style.display = calendar.style.display === "none" ? "block" : "none";
-  }
-  function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
-  }
-
-  document.addEventListener("click", function (e) {
-    const sidebar = document.getElementById("sidebar");
-    const toggleBtn = document.getElementById("sidebarToggleBtn");
-    if (sidebar.classList.contains("open") && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
-      sidebar.classList.remove("open");
-    }
-  });
-
-  function loadCharts(ca, chain, theme) {
-    const timeframes = ['1', '5', '15', '60'];
-    const container = document.getElementById('chartContainer');
-    container.innerHTML = '';
-    timeframes.forEach(tf => {
-      const url = `https://www.gmgn.cc/kline/${chain}/${ca}?interval=${tf}&theme=${theme}`;
-      const div = document.createElement('div');
-      div.className = 'chart-box';
-      div.innerHTML = `<iframe src="${url}" title="Chart ${tf}min"></iframe>`;
-      container.appendChild(div);
-    });
-  }
-
-  async function getTokenNameSolana(ca) {
-    try {
-      const response = await fetch(`https://api.helius.xyz/v0/token-metadata?api-key=demo`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mintAccounts: [ca] })
-      });
-      const result = await response.json();
-      return result[0]?.onChainMetadata?.metadata?.name || null;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  async function loadDashboard() {
-    const ca = document.getElementById('contractInput').value.trim();
-    const chain = document.getElementById('chainSelect').value;
-    const theme = document.getElementById('themeSelect').value;
-    if (!ca) return alert('Please enter a contract address.');
-    currentCA = ca;
-    loadCharts(ca, chain, theme);
-    document.getElementById("sidebar").classList.remove("open");
-    setTimeout(() => {
-      document.getElementById("chartContainer").scrollIntoView({ behavior: "smooth" });
-    }, 100);
-
-    const caBox = document.getElementById("caBox");
-    const caText = document.getElementById("caText");
-    let name = await getTokenNameSolana(currentCA);
-    if (!name) name = getTokenNameLocal(currentCA) || shortenAddress(currentCA);
-    caText.textContent = name;
-    caBox.style.display = "block";
-  }
-
-  function getTokenNameLocal(ca) {
-    const tokenMap = {
-      "So1xxxContract123": "SolanaMonkey",
-      "Eth123456789": "EtherFrog",
-      "Blast987654": "BlastPump",
-    };
-    return tokenMap[ca] || null;
-  }
-
-  function shortenAddress(addr) {
-    return addr.length > 10 ? addr.slice(0, 6) + "..." + addr.slice(-4) : addr;
-  }
-
-  function clearContract() {
-    document.getElementById('contractInput').value = '';
-    document.getElementById('chartContainer').innerHTML = '';
-    toggleClearButton();
-  }
-
-  function toggleClearButton() {
-    const input = document.getElementById('contractInput');
-    const btn = document.getElementById('clearBtn');
-    btn.style.display = input.value.trim() ? 'block' : 'none';
-  }
-
-  function applyTheme() {
-    const theme = document.getElementById('themeSelect').value;
-    if (theme === 'light') {
-      document.body.style.background = '#ffffff';
-      document.body.style.color = '#111';
-    } else {
-      document.body.style.background = '#0f2027';
-      document.body.style.color = '#f0f0f0';
-    }
-  }
-
-  function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function scrollToBottom() {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-  }
-
-  window.onscroll = function () {
-    const btn = document.getElementById("backToTop");
-    btn.style.display = window.scrollY > 200 ? "block" : "none";
-  };
-
-  function updateClock() {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('en-GB', { hour12: false });
-    document.getElementById('clock').textContent = timeString;
-  }
-  setInterval(updateClock, 1000);
-  updateClock(); // initial call
-
-</script>
+<script src="dashboard.js"></script>
 </body>
 </html>
