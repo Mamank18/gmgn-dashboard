@@ -154,6 +154,17 @@
 </div>
 
 <button id="backToTop" onclick="scrollToTop()" title="Back to Top">↑</button>
+<div id="clock" style="
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #00FF00;
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  z-index: 9999;
+  text-shadow: 0 0 4px #00ff00;">
+</div>
 
 <script>
   let currentCA = "";
@@ -268,7 +279,17 @@ function toggleCalendar() {
     const btn = document.getElementById("backToTop");
     btn.style.display = window.scrollY > 200 ? "block" : "none";
   };
+
+  function updateClock() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-GB', { hour12: false });
+    document.getElementById('clock').textContent = timeString;
+  }
+  setInterval(updateClock, 1000);
+  updateClock(); // initial call
+
 </script>
+
 </body>
 </html>
 
