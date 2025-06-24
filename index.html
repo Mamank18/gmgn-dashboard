@@ -150,6 +150,44 @@
     alt="Mamank Snipe Dashboard Header" 
     style="width: 100%; height: auto; display: block;" />
 </div>
+  <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+  {
+  "symbols": [
+    {
+      "description": "",
+      "proName": "INDEX:DXY"
+    },
+    {
+      "description": "",
+      "proName": "OANDA:XAUUSD"
+    },
+    {
+      "description": "",
+      "proName": "TVC:USOIL"
+    },
+    {
+      "description": "",
+      "proName": "TVC:UKOIL"
+    }, 
+    {
+      "description": "",
+      "proName": "FX_IDC:USDIDR"
+    }
+  ],
+  "showSymbolLogo": true,
+  "isTransparent": true,
+  "displayMode": "regular",
+  "colorTheme": "dark",
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+ <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/coinMarquee.js"></script><div id="coinmarketcap-widget-marquee" coins="1,1027,5426,1839,74,52,2,328" currency="USD" theme="dark" transparent="true" show-symbol-logo="true"></div>
 <div style="text-align: center; margin-top: 20px;">
   <button onclick="toggleCalendar()" style="
     background: transparent;
@@ -221,44 +259,6 @@
     box.style.display = box.style.display === "none" ? "block" : "none";
   }
 </script>
-  <!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
-  <div class="tradingview-widget-container__widget"></div>
-  <div class="tradingview-widget-copyright"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-  {
-  "symbols": [
-    {
-      "description": "",
-      "proName": "INDEX:DXY"
-    },
-    {
-      "description": "",
-      "proName": "OANDA:XAUUSD"
-    },
-    {
-      "description": "",
-      "proName": "TVC:USOIL"
-    },
-    {
-      "description": "",
-      "proName": "TVC:UKOIL"
-    }, 
-    {
-      "description": "",
-      "proName": "FX_IDC:USDIDR"
-    }
-  ],
-  "showSymbolLogo": true,
-  "isTransparent": true,
-  "displayMode": "regular",
-  "colorTheme": "dark",
-  "locale": "en"
-}
-  </script>
-</div>
-<!-- TradingView Widget END -->
- <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/coinMarquee.js"></script><div id="coinmarketcap-widget-marquee" coins="1,1027,5426,1839,74,52,2,328" currency="USD" theme="dark" transparent="true" show-symbol-logo="true"></div>
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
 <!-- Toggle Button -->
   <div class="sidebar" id="sidebar">
