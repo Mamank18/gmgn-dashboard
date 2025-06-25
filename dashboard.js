@@ -1,5 +1,4 @@
 
- 
 // ✅ Token metadata cache
 let tokenMap = JSON.parse(localStorage.getItem("tokenMap") || "{}");
 
@@ -40,7 +39,7 @@ async function updateClockAndBalance() {
     const sol = await getSolBalance(walletAddress);
     const usd = await getSolPriceUSD();
     const totalUSD = (sol * usd).toFixed(2);
-    document.getElementById("balanceDisplay").innerText = isBalanceVisible ? `${sol.toFixed(4)}($${totalUSD})` : "";
+    document.getElementById("balanceDisplay").innerText = isBalanceVisible ? `${sol.toFixed(4)} ($${totalUSD})` : "";
   } catch (err) {
     document.getElementById("balanceDisplay").innerText = "Gagal ambil saldo";
   }
@@ -54,7 +53,6 @@ async function toggleBalanceVisibility() {
     document.getElementById("balanceDisplay").innerText = "";
   }
 }
-
 
 function updateTime() {
   const now = new Date();
@@ -86,7 +84,7 @@ function loadCharts(ca, chain, theme) {
     const url = `https://www.gmgn.cc/kline/${chain}/${ca}?interval=${tf}&theme=${theme}`;
     const div = document.createElement('div');
     div.className = 'chart-box';
-    div.innerHTML = `<iframe src="${url}" title="Chart ${tf}min"></iframe>`;
+    div.innerHTML = `<iframe src="${url}" title="Chart ${tf}min" style="width:100%;height:300px;border:none;"></iframe>`;
     container.appendChild(div);
   });
 }
@@ -119,30 +117,34 @@ async function loadDashboard() {
   const chain = document.getElementById('chainSelect').value;
   const theme = document.getElementById('themeSelect').value;
   if (!ca) return alert('Please enter a contract address.');
-  currentCA = ca;
+
+  // ✅ Tetap load chart meskipun CA sama
   loadCharts(ca, chain, theme);
+
+  currentCA = ca;
   document.getElementById("sidebar").classList.remove("open");
   setTimeout(() => {
     document.getElementById("chartContainer").scrollIntoView({ behavior: "smooth" });
   }, 100);
 
   let name;
-  if (tokenMap[currentCA]) {
-    name = tokenMap[currentCA];
-  } else {
+  try {
     name = await getTokenNameSolana(currentCA);
     if (name) {
       tokenMap[currentCA] = name;
       localStorage.setItem("tokenMap", JSON.stringify(tokenMap));
       console.log("📦 Token cached:", currentCA, "→", name);
     } else {
-      name = shortenAddress(currentCA);
+      name = tokenMap[currentCA] || shortenAddress(currentCA);
     }
+  } catch {
+    name = tokenMap[currentCA] || shortenAddress(currentCA);
   }
 
   const caText = document.getElementById("caText");
   caText.innerHTML = `${name}<br><small style="opacity: 0.7;">${shortenAddress(currentCA)}</small>`;
   document.getElementById("caBox").style.display = "block";
+  toggleClearButton();
 }
 
 function clearContract() {
@@ -176,7 +178,15 @@ window.onscroll = function () {
   btn.style.display = window.scrollY > 200 ? "block" : "none";
 };
 
+// (Opsional) Clear token cache
+function clearTokenCache() {
+  localStorage.removeItem("tokenMap");
+  tokenMap = {};
+  alert("✅ Token cache dibersihkan.");
+}
+
 // Init
 updateClockAndBalance();
 updateTime();
 setInterval(updateTime, 1000);
+
