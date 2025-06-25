@@ -44,13 +44,30 @@
     }
     .sidebar input, .sidebar select { width: 100%; }
     .sidebar button { cursor: pointer; }
-    #backToTop {
-      position: fixed; bottom: 30px; left: 20px; z-index: 999;
-      background: #1e2a38; color: #f0f0f0; border: none;
-      padding: 10px 15px; border-radius: 50%; font-size: 18px;
-      cursor: pointer; display: none; box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-    #backToTop:hover { background: #32475b; }
+.scroll-circle-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50px;
+  background-color: #1e2a38; /* Sama seperti jam */
+  color: #ffffff; /* Putih terang */
+  border: 1px solid #1e2a38;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  text-shadow: 0 0 3px #00ffcc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  transition: background 0.3s ease, transform 0.2s ease;
+  opacity: 0.50;
+}
+
+.scroll-circle-btn:hover {
+  background-color: rgba(0, 229, 255, 0.2); /* Hover style semi-transparan */
+  transform: scale(1.1);
+}
+
+}
+
     @media (max-width: 768px) { .chart-box { flex: 1 1 100%; } }
   </style>
 </head>
@@ -142,20 +159,77 @@
 </div>
 
 <button class="sidebar-toggle" id="sidebarToggleBtn" onclick="toggleSidebar()">«</button>
+<!-- WRAPPER: Chart Grid + Checklist -->
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; margin-top: 20px;">
 
-<div class="chart-container" id="chartContainer"></div>
+  <!-- Chart Area (2x2 Grid) -->
+  <div id="chartContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 3; min-width: 600px;">
+    <!-- Chart iframe akan dimuat ke sini oleh JS -->
+  </div>
 
-<div id="caBox" style="position: fixed; bottom: 20px; right: 20px; background: #1e2a38; color: #f0f0f0; padding: 8px 12px; border-radius: 6px; font-size: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); display: none; z-index: 1000; opacity: 0.9;">
-  <button id="caDisplay" onclick="scrollToBottom()" style="background: transparent; border: none; color: inherit; cursor: pointer; font-size: 12px;"> 
-    <span id="caText"></span>
-  </button>
+  <!-- Checklist Panel -->
+<div id="checklistPanel" style="flex: 1; min-width: 250px; background: #1e2a38; padding: 20px; border-radius: 12px; color: #f0f0f0; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-family: 'Segoe UI', sans-serif;">
+  <div style="margin-bottom: 20px;">
+    <h2 style="margin-top: 0; color: #88ccff;">Token Name</h2>
+    <p><strong>Token:</strong> <span id="tokenName" style="color: #ffe680;">-</span></p>
+    <p><strong>CA:</strong> <span id="shortCA" style="color: #ffe680;">-</span></p>
+
+    <div id="walletBalanceInfo"
+         style="text-align: center; font-size: 16px; font-weight: bold; margin-top: 15px; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 8px; padding: 6px; background-color: rgba(0, 229, 255, 0.1); cursor: pointer;">
+      SOL
+    </div>
+  </div>
+
+  <h3 style="margin-top: 10px;">🧭 Saat Entry</h3>
+
+  <div>
+    <p style="margin: 10px 0;"><strong>📈 Saat Harga Naik:</strong></p>
+    <ul style="padding-left: 20px; margin-top: 0;">
+      <li>🔍 Cek Volume: Naik/Turun</li>
+      <li>👥 Cek Holder: Naik/Turun</li>
+      <li>💰 Cek Netbuy: + atau -</li>
+      <li>📊 Cek Struktur: Breakout / Retest</li>
+      <li>🧾 Cek Transaksi: Masih masuk besar / mulai surut</li>
+    </ul>
+
+    <p style="margin: 10px 0;"><strong>📉 Saat Harga Turun:</strong></p>
+    <ul style="padding-left: 20px; margin-top: 0;">
+      <li>🔍 Cek Volume: Naik/Turun</li>
+      <li>👥 Cek Holder: Tetap / Berkurang</li>
+      <li>💰 Cek Netbuy: Tetap + atau mulai -</li>
+      <li>📊 Cek Struktur: Support / Breakdown</li>
+      <li>🧾 Cek Transaksi: Panic sell atau wajar</li>
+    </ul>
+  </div>
+ <div id="checklistClock" style="
+  margin-top: 10px;
+  color: #ffff33; /* kuning terang */
+  font-family: 'Courier New', monospace;
+  font-size: 22px;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+  text-shadow: 0 0 6px #ff0;
+">
+  <div id="checklistClockDisplay">--:--:--</div>
 </div>
 
-<button id="backToTop" onclick="scrollToTop()" title="Back to Top" >↑</button>
 
+</div>
+<!-- Tombol Scroll ke Atas -->
+<button id="backToTop"
+        onclick="scrollToTop()"
+        style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; display: none;"
+        class="scroll-circle-btn">⬆</button>
+
+<!-- Tombol Scroll ke Bawah -->
+<button id="scrollBottomBtn"
+        onclick="scrollToBottom()"
+        style="position: fixed; bottom: 20px; left: 20px; z-index: 1000;"
+        class="scroll-circle-btn">⬇</button>
 <div id="solClockCombined" onclick="toggleBalanceVisibility()" style="
   position: fixed;
-  bottom: 10px;
+  bottom: 5px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #1e2a38;
@@ -166,13 +240,20 @@
   font-size: 16px;
   z-index: 9999;
   text-shadow: 0 0 3px #00ffcc;
-  text-align: center;
+  text-align: right;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  opacity: 0.50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 ">
   <div id="clockDisplay">Loading time...</div>
   <div id="balanceDisplay"></div>
 </div>
 
-<script src="dashboard.js"></script>
+<script src="dashboard1.js"></script>
 </body>
 </html>
