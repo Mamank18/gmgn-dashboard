@@ -1,4 +1,5 @@
 
+
 // ✅ Token metadata cache
 let tokenMap = JSON.parse(localStorage.getItem("tokenMap") || "{}");
 
@@ -80,45 +81,23 @@ function loadCharts(ca, chain, theme) {
   const timeframes = ['1', '5', '15', '60'];
   const container = document.getElementById('chartContainer');
   container.innerHTML = '';
+
   timeframes.forEach(tf => {
     const url = `https://www.gmgn.cc/kline/${chain}/${ca}?interval=${tf}&theme=${theme}`;
     const div = document.createElement('div');
-    div.className = 'chart-box';
-    div.innerHTML = `<iframe src="${url}" title="Chart ${tf}min" style="width:100%;height:300px;border:none;"></iframe>`;
+    div.innerHTML = `<iframe src="${url}" title="Chart ${tf}min" style="width:100%;height:300px;border:none;border-radius:8px;"></iframe>`;
     container.appendChild(div);
   });
-}
 
-async function getTokenNameSolana(ca) {
-  try {
-    const response = await fetch(`https://api.helius.xyz/v0/token-metadata?api-key=${heliusApiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mintAccounts: [ca] })
-    });
-    const result = await response.json();
-    const token = result[0];
-    const name =
-      token?.onChainMetadata?.metadata?.data?.name ||
-      token?.onChainMetadata?.metadata?.name ||
-      token?.onChainMetadata?.name ||
-      token?.offChainMetadata?.name ||
-      token?.tokenInfo?.name ||
-      null;
-    return name;
-  } catch (e) {
-    console.error("⚠️ Gagal ambil metadata:", e);
-    return null;
-  }
+  document.getElementById("checklistPanel").style.display = "block";
 }
-
 async function loadDashboard() {
   const ca = document.getElementById('contractInput').value.trim();
   const chain = document.getElementById('chainSelect').value;
   const theme = document.getElementById('themeSelect').value;
   if (!ca) return alert('Please enter a contract address.');
 
-  // ✅ Tetap load chart meskipun CA sama
+  document.getElementById("checklistPanel").style.display = "block";
   loadCharts(ca, chain, theme);
 
   currentCA = ca;
@@ -142,14 +121,30 @@ async function loadDashboard() {
   }
 
   const caText = document.getElementById("caText");
-  caText.innerHTML = `${name}<br><small style="opacity: 0.7;">${shortenAddress(currentCA)}</small>`;
-  document.getElementById("caBox").style.display = "block";
+  if (caText) {
+    caText.innerHTML = `${name}<br><small style="opacity: 0.7;">${shortenAddress(currentCA)}</small>`;
+    document.getElementById("caBox").style.display = "block";
+  }
+
+  // ✅ Update info ke dalam checklist panel (penting!)
+  const tokenNameEl = document.getElementById("tokenName");
+  const shortCAEl = document.getElementById("shortCA");
+
+  if (tokenNameEl && shortCAEl) {
+    tokenNameEl.innerText = name;
+    shortCAEl.innerText = shortenAddress(currentCA);
+  } else {
+    console.warn("Elemen #tokenName atau #shortCA tidak ditemukan di halaman.");
+  }
+
   toggleClearButton();
 }
+
 
 function clearContract() {
   document.getElementById('contractInput').value = '';
   document.getElementById('chartContainer').innerHTML = '';
+  document.getElementById("checklistPanel").style.display = "none";
   toggleClearButton();
 }
 
@@ -174,9 +169,17 @@ function scrollToBottom() {
 }
 
 window.onscroll = function () {
-  const btn = document.getElementById("backToTop");
-  btn.style.display = window.scrollY > 200 ? "block" : "none";
+  const btnTop = document.getElementById("backToTop");
+  const btnBottom = document.getElementById("scrollBottomBtn");
+
+  // Tampilkan tombol atas jika scroll > 200px
+  btnTop.style.display = window.scrollY > 200 ? "block" : "none";
+
+  // Sembunyikan tombol bawah jika sudah mendekati akhir halaman
+  const nearBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 50);
+  btnBottom.style.display = nearBottom ? "none" : "block";
 };
+
 
 // (Opsional) Clear token cache
 function clearTokenCache() {
@@ -184,9 +187,42 @@ function clearTokenCache() {
   tokenMap = {};
   alert("✅ Token cache dibersihkan.");
 }
+function updateChecklistClock() {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
+  document.getElementById('checklistClockDisplay').innerText = timeString;
+}
+
+setInterval(updateChecklistClock, 1000);
+updateChecklistClock(); // Jalankan saat pertama kali
 
 // Init
-updateClockAndBalance();
 updateTime();
 setInterval(updateTime, 1000);
+document.addEventListener("DOMContentLoaded", function () {
+  const balanceEl = document.getElementById("walletBalanceInfo");
+  if (balanceEl) {
+    let isBalanceShown = false;
 
+    balanceEl.innerText = "SOL";
+    balanceEl.style.cursor = "pointer";
+    balanceEl.style.textDecoration = "underline";
+
+    balanceEl.addEventListener("click", async function () {
+      if (!isBalanceShown) {
+        try {
+          const sol = await getSolBalance(walletAddress);
+          const usd = await getSolPriceUSD();
+          const totalUSD = (sol * usd).toFixed(2);
+          balanceEl.innerText = `${sol.toFixed(4)} SOL ($${totalUSD})`;
+          isBalanceShown = true;
+        } catch (err) {
+          balanceEl.innerText = "Gagal ambil saldo";
+        }
+      } else {
+        balanceEl.innerText = "SOL";
+        isBalanceShown = false;
+      }
+    });    
+  }
+});
