@@ -91,6 +91,28 @@ function loadCharts(ca, chain, theme) {
 
   document.getElementById("checklistPanel").style.display = "block";
 }
+async function getTokenNameSolana(ca) {
+  try {
+    const response = await fetch(`https://api.helius.xyz/v0/token-metadata?api-key=${heliusApiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mintAccounts: [ca] })
+    });
+    const result = await response.json();
+    const token = result[0];
+    const name =
+      token?.onChainMetadata?.metadata?.data?.name ||
+      token?.onChainMetadata?.metadata?.name ||
+      token?.onChainMetadata?.name ||
+      token?.offChainMetadata?.name ||
+      token?.tokenInfo?.name ||
+      null;
+    return name;
+  } catch (e) {
+    console.error("⚠️ Gagal ambil metadata:", e);
+    return null;
+  }
+}
 async function loadDashboard() {
   const ca = document.getElementById('contractInput').value.trim();
   const chain = document.getElementById('chainSelect').value;
