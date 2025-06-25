@@ -5,7 +5,6 @@ let tokenMap = JSON.parse(localStorage.getItem("tokenMap") || "{}");
 
 // ✅ Constants
 const walletAddress = "DMsDZSayCJ1uwLUxGzJmniDGcfNtmZgzg83Mi9An8pi3";
-const heliusApiKey = "cb0e6fdb-3ea9-41bb-9536-479b40403f97";
 let isBalanceVisible = false;
 let currentCA = "";
 
@@ -15,7 +14,7 @@ function shortenAddress(addr) {
 }
 
 async function getSolBalance(address) {
-  const response = await fetch(`https://rpc.helius.xyz/?api-key=${heliusApiKey}`, {
+  const response = await fetch("https://mamankv1.aminsubhan.workers.dev/get-balance", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -93,26 +92,30 @@ function loadCharts(ca, chain, theme) {
 }
 async function getTokenNameSolana(ca) {
   try {
-    const response = await fetch(`https://api.helius.xyz/v0/token-metadata?api-key=${heliusApiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mintAccounts: [ca] })
-    });
+    const response = await fetch(`https://mamankv1.aminsubhan.workers.dev/token-metadata?mint=${ca}`);
+
     const result = await response.json();
+    console.log("Token Metadata Response:", result); // Debug output
+
     const token = result[0];
+
     const name =
-      token?.onChainMetadata?.metadata?.data?.name ||
-      token?.onChainMetadata?.metadata?.name ||
-      token?.onChainMetadata?.name ||
-      token?.offChainMetadata?.name ||
-      token?.tokenInfo?.name ||
-      null;
+      token?.onChainMetadata?.metadata?.data?.name ||  // struktur valid
+      token?.onChainMetadata?.metadata?.name ||         // alternatif
+      token?.onChainMetadata?.name ||                   // alternatif
+      token?.name ||                                    // fallback
+      "Unknown Token";
+
     return name;
-  } catch (e) {
-    console.error("⚠️ Gagal ambil metadata:", e);
-    return null;
+
+  } catch (error) {
+    console.error("Error fetching token name:", error);
+    return "Unknown Token";
   }
 }
+
+
+
 async function loadDashboard() {
   const ca = document.getElementById('contractInput').value.trim();
   const chain = document.getElementById('chainSelect').value;
