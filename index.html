@@ -71,9 +71,37 @@
 <body>
 
 <div style="width: 100%; overflow: hidden;">
-  <img src="https://raw.githubusercontent.com/Mamank18/gmgn-dashboard/main/mamank_header.png" alt="Mamank Snipe Dashboard Header" style="width: 100%; height: auto; display: block;" />
+  <img 
+    src="https://raw.githubusercontent.com/Mamank18/gmgn-dashboard/main/mamank_header.png" 
+    alt="Mamank Snipe Dashboard Header" 
+    style="width: 100%; max-height: 475px; height: auto; display: block;" 
+  />
 </div>
 
+<div style="text-align: center; margin-top: 20px;">
+  <button onclick="toggleCalendar()" style="background: transparent; border: none; cursor: pointer; padding: 0;">
+    <img src="https://raw.githubusercontent.com/Mamank18/gmgn-dashboard/main/economicaltv.png" 
+         alt="economicaltv" 
+         style="height: 40px;" 
+         title="Toggle Economic Calender">
+  </button>
+  <div id="calendarWidget" style="display: none;">
+    <div class="tradingview-widget-container" style="margin-top: 10px;">
+      <div class="tradingview-widget-container__widget"></div>
+    </div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+    {
+      "colorTheme": "dark",
+      "isTransparent": true,
+      "width": "100%",
+      "height": "350",
+      "locale": "en",
+      "importanceFilter": "0,1",
+      "countryFilter": "ar,au,br,ca,cn,fr,de,in,id,it,jp,kr,mx,ru,sa,za,tr,gb,us,eu"
+    }
+    </script>
+  </div>
+</div>
 <div class="tradingview-widget-container">
   <div class="tradingview-widget-container__widget"></div>
   <div class="tradingview-widget-copyright"></div>
@@ -109,34 +137,8 @@
 }
   </script>
 </div>
-
 <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/coinMarquee.js"></script>
 <div id="coinmarketcap-widget-marquee" coins="1,1027,5426,1839,74,52,2,328" currency="USD" theme="dark" transparent="true" show-symbol-logo="true"></div>
-
-<div style="text-align: center; margin-top: 20px;">
-  <button onclick="toggleCalendar()" style="background: transparent; border: none; cursor: pointer; padding: 0;">
-    <img src="https://raw.githubusercontent.com/Mamank18/gmgn-dashboard/main/economicaltv.png" 
-         alt="economicaltv" 
-         style="height: 40px;" 
-         title="Toggle Economic Calender">
-  </button>
-  <div id="calendarWidget" style="display: none;">
-    <div class="tradingview-widget-container" style="margin-top: 10px;">
-      <div class="tradingview-widget-container__widget"></div>
-    </div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
-    {
-      "colorTheme": "dark",
-      "isTransparent": true,
-      "width": "100%",
-      "height": "350",
-      "locale": "en",
-      "importanceFilter": "0,1",
-      "countryFilter": "ar,au,br,ca,cn,fr,de,in,id,it,jp,kr,mx,ru,sa,za,tr,gb,us,eu"
-    }
-    </script>
-  </div>
-</div>
 
 <div class="sidebar" id="sidebar">
   <div class="input-wrapper">
@@ -165,57 +167,34 @@
   </div>
 
   <!-- Checklist Panel -->
-<div id="checklistPanel" style="flex: 1; min-width: 250px; background: #1e2a38; padding: 20px; border-radius: 12px; color: #f0f0f0; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-family: 'Segoe UI', sans-serif;">
-  <div style="margin-bottom: 20px;">
-    <img src="https://raw.githubusercontent.com/Mamank18/gmgn-dashboard/main/mamank_header.png" 
-     alt="sidepict" 
-     style="max-width: 100%; height: 50px; display: block; margin: 0 auto;" />
-
-    <p><strong>Token:</strong> <span id="tokenName" style="color: #ffe680;">-</span></p>
-    <p><strong>CA:</strong> <span id="shortCA" style="color: #ffe680;">-</span></p>
-
-    <div id="walletBalanceInfo"
-         style="text-align: center; font-size: 16px; font-weight: bold; margin-top: 15px; color: #00e5ff; border: 1px solid #00e5ff; border-radius: 8px; padding: 6px; background-color: rgba(0, 229, 255, 0.1); cursor: pointer;">
-      SOL
-    </div>
-  </div>
-
-  <h3 style="margin-top: 10px;">🧭 Saat Entry</h3>
-
-  <div>
-    <p style="margin: 10px 0;"><strong>📈 Saat Harga Naik:</strong></p>
-    <ul style="padding-left: 20px; margin-top: 0;">
-      <li>🔍 Cek Volume: Naik/Turun</li>
-      <li>👥 Cek Holder: Naik/Turun</li>
-      <li>💰 Cek Netbuy: + atau -</li>
-      <li>📊 Cek Struktur: Breakout / Retest</li>
-      <li>🧾 Cek Transaksi: Masih masuk besar / mulai surut</li>
-    </ul>
-
-    <p style="margin: 10px 0;"><strong>📉 Saat Harga Turun:</strong></p>
-    <ul style="padding-left: 20px; margin-top: 0;">
-      <li>🔍 Cek Volume: Naik/Turun</li>
-      <li>👥 Cek Holder: Tetap / Berkurang</li>
-      <li>💰 Cek Netbuy: Tetap + atau mulai -</li>
-      <li>📊 Cek Struktur: Support / Breakdown</li>
-      <li>🧾 Cek Transaksi: Panic sell atau wajar</li>
-    </ul>
-  </div>
- <div id="checklistClock" style="
-  margin-top: 10px;
-  color: #ffff33; /* kuning terang */
+<div id="checklistPanel" style="
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background-color: #1e2a38;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
   font-family: 'Courier New', monospace;
-  font-size: 22px;
-  text-align: center;
-  width: 100%;
-  font-weight: bold;
-  text-shadow: 0 0 6px #ff0;
+  font-size: 16px;
+  z-index: 9999;
+  text-shadow: 0 0 3px #00ffcc;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  opacity: 0.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 ">
-  <div id="checklistClockDisplay">--:--:--</div>
+
+  <div style="display: flex; gap: 10px; align-items: center;">
+    <span id="tokenName" style="color: white;">-</span>
+    <span id="shortCA" style="color: white;">-</span>
+  </div>
+
 </div>
 
-
-</div>
 <!-- Tombol Scroll ke Atas -->
 <button id="backToTop"
         onclick="scrollToTop()"
