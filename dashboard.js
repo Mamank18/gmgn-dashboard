@@ -107,7 +107,7 @@ function loadCharts(ca, chain, theme) {
   timeframes.forEach(tf => {
     const url = `https://www.gmgn.cc/kline/${chain}/${ca}?interval=${tf}&theme=${theme}`;
     const div = document.createElement('div');
-    div.innerHTML = `<iframe src="${url}" title="Chart ${tf}min" style="width:100%;height:350px;border:none;border-radius:8px;"></iframe>`;
+    div.innerHTML = `<iframe src="${url}" title="Chart ${tf}min" style="width:100%;height:300px;border:none;border-radius:8px;"></iframe>`;
     container.appendChild(div);
   });
 
