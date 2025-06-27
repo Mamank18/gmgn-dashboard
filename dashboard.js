@@ -55,7 +55,18 @@ async function toggleBalanceVisibility() {
 
 function updateTime() {
   const now = new Date();
-  document.getElementById("clockDisplay").innerText = now.toLocaleTimeString("id-ID", { hour12: false });
+  document.getElementById("clockDisplay").innerText = now.toLocaleString("id-ID", {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  weekday: 'short',
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  hour12: false
+})
+// Contoh: Kam, 27 Jun 2025 14.32.45
+;
 }
 
 function toggleCalendar() {
