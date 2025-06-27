@@ -53,6 +53,11 @@ async function toggleBalanceVisibility() {
   }
 }
 
+function updateTime() {
+  const now = new Date();
+  document.getElementById("clockDisplay").innerText = now.toLocaleTimeString("id-ID", { hour12: false });
+}
+
 function toggleCalendar() {
   const calendar = document.getElementById("calendarWidget");
   calendar.style.display = calendar.style.display === "none" ? "block" : "none";
@@ -62,13 +67,37 @@ function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("open");
 }
 
-document.addEventListener("click", function (e) {
-  const sidebar = document.getElementById("sidebar");
-  const toggleBtn = document.getElementById("sidebarToggleBtn");
-  if (sidebar.classList.contains("open") && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
-    sidebar.classList.remove("open");
+document.addEventListener("DOMContentLoaded", function () {
+  updateTime(); // Tambahkan ini di sini juga
+  setInterval(updateTime, 1000); // Tetap aktifkan loop update tiap detik
+
+  const balanceEl = document.getElementById("walletBalanceInfo");
+  if (balanceEl) {
+    let isBalanceShown = false;
+
+    balanceEl.innerText = "SOL";
+    balanceEl.style.cursor = "pointer";
+    balanceEl.style.textDecoration = "underline";
+
+    balanceEl.addEventListener("click", async function () {
+      if (!isBalanceShown) {
+        try {
+          const sol = await getSolBalance(walletAddress);
+          const usd = await getSolPriceUSD();
+          const totalUSD = (sol * usd).toFixed(2);
+          balanceEl.innerText = `${sol.toFixed(4)} SOL ($${totalUSD})`;
+          isBalanceShown = true;
+        } catch (err) {
+          balanceEl.innerText = "Gagal ambil saldo";
+        }
+      } else {
+        balanceEl.innerText = "SOL";
+        isBalanceShown = false;
+      }
+    });    
   }
 });
+
 
 function loadCharts(ca, chain, theme) {
   const timeframes = ['1', '5', '15', '60'];
@@ -107,6 +136,8 @@ async function getTokenNameSolana(ca) {
     return "Unknown Token";
   }
 }
+
+
 
 async function loadDashboard() {
   const ca = document.getElementById('contractInput').value.trim();
@@ -205,28 +236,33 @@ function clearTokenCache() {
   alert("✅ Token cache dibersihkan.");
 }
 
-function updateTimeOnly() {
-  const now = new Date();
-  const clockElement = document.getElementById("clockDisplay");
-  if (clockElement) {
-    clockElement.innerText = now.toLocaleString("id-ID", {
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit',
-  weekday: 'short',
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric',
-  hour12: false
-})
-// Contoh: Kam, 27 Jun 2025 14.32.45
-;
+// Init
+updateTime();
+setInterval(updateTime, 1000);
+document.addEventListener("DOMContentLoaded", function () {
+  const balanceEl = document.getElementById("walletBalanceInfo");
+  if (balanceEl) {
+    let isBalanceShown = false;
+
+    balanceEl.innerText = "SOL";
+    balanceEl.style.cursor = "pointer";
+    balanceEl.style.textDecoration = "underline";
+
+    balanceEl.addEventListener("click", async function () {
+      if (!isBalanceShown) {
+        try {
+          const sol = await getSolBalance(walletAddress);
+          const usd = await getSolPriceUSD();
+          const totalUSD = (sol * usd).toFixed(2);
+          balanceEl.innerText = `${sol.toFixed(4)} SOL ($${totalUSD})`;
+          isBalanceShown = true;
+        } catch (err) {
+          balanceEl.innerText = "Gagal ambil saldo";
+        }
+      } else {
+        balanceEl.innerText = "SOL";
+        isBalanceShown = false;
+      }
+    });    
   }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  updateTimeOnly();
-  setInterval(updateTimeOnly, 1000); // update tiap detik
 });
-
-
