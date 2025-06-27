@@ -169,7 +169,7 @@
   <!-- Checklist Panel -->
 <div id="checklistPanel" style="
   position: fixed;
-  bottom: 10px;
+  bottom: 5px;
   right: 10px;
   background-color: #1e2a38;
   color: white;
@@ -198,13 +198,13 @@
 <!-- Tombol Scroll ke Atas -->
 <button id="backToTop"
         onclick="scrollToTop()"
-        style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; display: none;"
+        style="position: fixed; bottom: 5px; left: 5px; z-index: 1000; display: none;"
         class="scroll-circle-btn">⬆</button>
 
 <!-- Tombol Scroll ke Bawah -->
 <button id="scrollBottomBtn"
         onclick="scrollToBottom()"
-        style="position: fixed; bottom: 20px; left: 20px; z-index: 1000;"
+        style="position: fixed; bottom: 5px; left: 5px; z-index: 1000;"
         class="scroll-circle-btn">⬇</button>
 <div id="solClockCombined" onclick="toggleBalanceVisibility()" style="
   position: fixed;
@@ -219,7 +219,7 @@
   font-size: 16px;
   z-index: 9999;
   text-shadow: 0 0 3px #00ffcc;
-  text-align: right;
+  text-align: center;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0,0,0,0.4);
   opacity: 0.50;
@@ -227,13 +227,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
 ">
   <div id="clockDisplay">Loading time...</div>
   <div id="balanceDisplay"></div>
 </div>
 
+
+<!-- Pastikan ini di AKHIR <body> -->
 <script src="dashboard.js"></script>
+
 
 </body>
 </html>

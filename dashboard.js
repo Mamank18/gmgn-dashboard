@@ -53,11 +53,6 @@ async function toggleBalanceVisibility() {
   }
 }
 
-function updateTime() {
-  const now = new Date();
-  document.getElementById("clockDisplay").innerText = now.toLocaleTimeString("id-ID", { hour12: false });
-}
-
 function toggleCalendar() {
   const calendar = document.getElementById("calendarWidget");
   calendar.style.display = calendar.style.display === "none" ? "block" : "none";
@@ -83,7 +78,7 @@ function loadCharts(ca, chain, theme) {
   timeframes.forEach(tf => {
     const url = `https://www.gmgn.cc/kline/${chain}/${ca}?interval=${tf}&theme=${theme}`;
     const div = document.createElement('div');
-    div.innerHTML = `<iframe src="${url}" title="Chart ${tf}min" style="width:100%;height:300px;border:none;border-radius:8px;"></iframe>`;
+    div.innerHTML = `<iframe src="${url}" title="Chart ${tf}min" style="width:100%;height:350px;border:none;border-radius:8px;"></iframe>`;
     container.appendChild(div);
   });
 
@@ -112,8 +107,6 @@ async function getTokenNameSolana(ca) {
     return "Unknown Token";
   }
 }
-
-
 
 async function loadDashboard() {
   const ca = document.getElementById('contractInput').value.trim();
@@ -211,42 +204,29 @@ function clearTokenCache() {
   tokenMap = {};
   alert("✅ Token cache dibersihkan.");
 }
-function updateChecklistClock() {
+
+function updateTimeOnly() {
   const now = new Date();
-  const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
-  document.getElementById('checklistClockDisplay').innerText = timeString;
+  const clockElement = document.getElementById("clockDisplay");
+  if (clockElement) {
+    clockElement.innerText = now.toLocaleString("id-ID", {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  weekday: 'short',
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  hour12: false
+})
+// Contoh: Kam, 27 Jun 2025 14.32.45
+;
+  }
 }
 
-setInterval(updateChecklistClock, 1000);
-updateChecklistClock(); // Jalankan saat pertama kali
-
-// Init
-updateTime();
-setInterval(updateTime, 1000);
-document.addEventListener("DOMContentLoaded", function () {
-  const balanceEl = document.getElementById("walletBalanceInfo");
-  if (balanceEl) {
-    let isBalanceShown = false;
-
-    balanceEl.innerText = "SOL";
-    balanceEl.style.cursor = "pointer";
-    balanceEl.style.textDecoration = "underline";
-
-    balanceEl.addEventListener("click", async function () {
-      if (!isBalanceShown) {
-        try {
-          const sol = await getSolBalance(walletAddress);
-          const usd = await getSolPriceUSD();
-          const totalUSD = (sol * usd).toFixed(2);
-          balanceEl.innerText = `${sol.toFixed(4)} SOL ($${totalUSD})`;
-          isBalanceShown = true;
-        } catch (err) {
-          balanceEl.innerText = "Gagal ambil saldo";
-        }
-      } else {
-        balanceEl.innerText = "SOL";
-        isBalanceShown = false;
-      }
-    });    
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  updateTimeOnly();
+  setInterval(updateTimeOnly, 1000); // update tiap detik
 });
+
+
